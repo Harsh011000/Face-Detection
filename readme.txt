@@ -1,0 +1,1 @@
+Python project to detect human faces and to verify their identity

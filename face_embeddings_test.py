@@ -1,39 +1,74 @@
 import face_recognition as fr
 import cv2
 import numpy as np
+from facenet_pytorch import InceptionResnetV1, fixed_image_standardization
+from PIL import Image
+import torch
 
 face_emb=[]
 face_nm=[]
+resnet = InceptionResnetV1(pretrained='vggface2').eval()
+resnet = resnet.to("cuda" if torch.cuda.is_available() else "cpu")
+
+def load_image(filename):
+    image = Image.open(filename)
+    # Ensure the image is in RGB mode
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+    # Resize the image to the required input size (160x160)
+    image = image.resize((160, 160), Image.LANCZOS)
+    return np.array(image)
+
+def extract_embedding(filename):
+    pixels = load_image(filename)
+    # Preprocess the image by subtracting the mean and scaling
+    pixels = fixed_image_standardization(pixels)
+    # Convert to tensor and move to GPU if available
+    pixels = torch.tensor(pixels).to("cuda" if torch.cuda.is_available() else "cpu")
+    pixels = pixels.permute(2, 0, 1).unsqueeze(0).float()
+    # Calculate the embedding
+    embedding = resnet(pixels)
+    return embedding
+
+face_emb.append(extract_embedding('test_im1.jpg'))
+face_nm.append("Harsh")
+
+face_emb.append(extract_embedding('test_im3.jpg'))
+face_nm.append("Sirshak")
+
+face_emb.append(extract_embedding('test_im7.jpg'))
+face_nm.append("Himesh")
 def match():
-    face_image=cv2.imread('run_im.jpg')
-    face_image = cv2.resize(face_image, (256, 256)) #I resize that picture to 256x256 as I saw it was giving better results
-    face_encodings = fr.face_encodings(face_image)
-    if len(face_encodings) > 0:
-        face_embedding_un = face_encodings[0]
-        if len(face_emb) == 0 and len(face_nm) == 0:
-            face_image2 = cv2.imread('test_im1.jpg')
-            face_image2 = cv2.resize(face_image2, (256, 256)) #I resize that picture to 256x256 as I saw it was giving better results
-            face_embedding2 = fr.face_encodings(face_image2)[0] #This converts the face into a face embedding, a 128-d vector.
-            face_emb.append(face_embedding2)
-            face_nm.append("Harsh")
+    # face_image=cv2.imread('run_im.jpg')
+    # face_image = cv2.resize(face_image, (256, 256)) #I resize that picture to 256x256 as I saw it was giving better results
+    # face_encodings = fr.face_encodings(face_image)
+    face_embd=extract_embedding('run_im.jpg')
+    if len(face_embd) > 0:
+        face_embedding_un = face_embd
+        #if len(face_emb) == 0 and len(face_nm) == 0:
+            # face_image2 = cv2.imread('test_im1.jpg')
+            # face_image2 = cv2.resize(face_image2, (256, 256)) #I resize that picture to 256x256 as I saw it was giving better results
+            # face_embedding2 = fr.face_encodings(face_image2)[0] #This converts the face into a face embedding, a 128-d vector.
+            # face_emb.append(face_embedding2)
+            # face_nm.append("Harsh")
 
-            face_image3 = cv2.imread('test_im3.jpg')
-            face_image3 = cv2.resize(face_image3, (256, 256))  # I resize that picture to 256x256 as I saw it was giving better results
-            face_embedding3 = fr.face_encodings(face_image3)[0]  # This converts the face into a face embedding, a 128-d vector.
-            face_emb.append(face_embedding3)
-            face_nm.append("Sirshak")
+            # face_image3 = cv2.imread('test_im3.jpg')
+            # face_image3 = cv2.resize(face_image3, (256, 256))  # I resize that picture to 256x256 as I saw it was giving better results
+            # face_embedding3 = fr.face_encodings(face_image3)[0]  # This converts the face into a face embedding, a 128-d vector.
+            # face_emb.append(face_embedding3)
+            # face_nm.append("Sirshak")
 
-            face_image3 = cv2.imread('test_im7.jpg')
-            face_image3 = cv2.resize(face_image3, (256, 256))  # I resize that picture to 256x256 as I saw it was giving better results
-            face_embedding3 = fr.face_encodings(face_image3)[0]  # This converts the face into a face embedding, a 128-d vector.
-            face_emb.append(face_embedding3)
-            face_nm.append("Himesh")
+            # face_image3 = cv2.imread('test_im7.jpg')
+            # face_image3 = cv2.resize(face_image3, (256, 256))  # I resize that picture to 256x256 as I saw it was giving better results
+            # face_embedding3 = fr.face_encodings(face_image3)[0]  # This converts the face into a face embedding, a 128-d vector.
+            # face_emb.append(face_embedding3)
+            # face_nm.append("Himesh")
 
-            name=find_match(face_embedding_un)
-            return name
-        else:
-            name = find_match(face_embedding_un)
-            return name
+        name=find_match(face_embedding_un)
+        return name
+        # else:
+        #     name = find_match(face_embedding_un)
+        #     return name
     else:
         return "unknown"
 
@@ -41,13 +76,13 @@ def find_match(unknown):
     unknown_face_embedding = unknown
 
     # Calculate the Euclidean distances between the unknown face and each known face
-    distances = [np.linalg.norm(known_emb - unknown_face_embedding) for known_emb in face_emb]
+    distances = [(known_emb - unknown_face_embedding).norm().item() for known_emb in face_emb]
 
     # Find the index of the known face embedding with the minimum distance
     min_distance_index = np.argmin(distances)
 
     # Set a threshold for face recognition
-    threshold = 0.6  # You can adjust this value as needed
+    threshold = 0.7  # You can adjust this value as needed
 
     # Check if the minimum distance is less than the threshold to determine recognition
     if distances[min_distance_index] <= threshold:

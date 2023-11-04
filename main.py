@@ -35,7 +35,7 @@ while cap.isOpened():
         #print(results[0].names)
 
         cv2.imshow("detection",annote)
-        if cv2.waitKey(7)==27:
+        if cv2.waitKey(1)==27:
             break;
 cap.release()
 cv2.destroyAllWindows()
