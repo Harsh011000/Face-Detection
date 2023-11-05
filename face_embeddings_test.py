@@ -38,6 +38,9 @@ face_nm.append("Sirshak")
 
 face_emb.append(extract_embedding('test_im7.jpg'))
 face_nm.append("Himesh")
+
+face_emb.append(extract_embedding('test_im8.jpg'))
+face_nm.append("Uttkarsh")
 def match():
     # face_image=cv2.imread('run_im.jpg')
     # face_image = cv2.resize(face_image, (256, 256)) #I resize that picture to 256x256 as I saw it was giving better results
