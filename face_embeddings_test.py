@@ -4,11 +4,13 @@ import numpy as np
 from facenet_pytorch import InceptionResnetV1, fixed_image_standardization
 from PIL import Image
 import torch
+import data_fetch_db
 
 face_emb=[]
 face_nm=[]
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 resnet = resnet.to("cuda" if torch.cuda.is_available() else "cpu")
+flag=0
 
 def load_image(filename):
     image = Image.open(filename)
@@ -30,17 +32,17 @@ def extract_embedding(filename):
     embedding = resnet(pixels)
     return embedding
 
-face_emb.append(extract_embedding('test_im1.jpg'))
-face_nm.append("Harsh")
-
-face_emb.append(extract_embedding('test_im3.jpg'))
-face_nm.append("Sirshak")
-
-face_emb.append(extract_embedding('test_im7.jpg'))
-face_nm.append("Himesh")
-
-face_emb.append(extract_embedding('test_im8.jpg'))
-face_nm.append("Uttkarsh")
+# face_emb.append(extract_embedding('test_im1.jpg'))
+# face_nm.append("Harsh")
+#
+# face_emb.append(extract_embedding('test_im3.jpg'))
+# face_nm.append("Sirshak")
+#
+# face_emb.append(extract_embedding('test_im7.jpg'))
+# face_nm.append("Himesh")
+#
+# face_emb.append(extract_embedding('test_im8.jpg'))
+# face_nm.append("Uttkarsh")
 def match():
     # face_image=cv2.imread('run_im.jpg')
     # face_image = cv2.resize(face_image, (256, 256)) #I resize that picture to 256x256 as I saw it was giving better results
@@ -48,6 +50,13 @@ def match():
     face_embd=extract_embedding('run_im.jpg')
     if len(face_embd) > 0:
         face_embedding_un = face_embd
+        global flag
+        if flag==0:
+            tmp=data_fetch_db.get_data(face_embedding_un)
+            global face_nm,face_emb
+            face_nm=tmp[0]
+            face_emb=tmp[1]
+            flag=1
         #if len(face_emb) == 0 and len(face_nm) == 0:
             # face_image2 = cv2.imread('test_im1.jpg')
             # face_image2 = cv2.resize(face_image2, (256, 256)) #I resize that picture to 256x256 as I saw it was giving better results
