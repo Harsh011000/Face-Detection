@@ -1,0 +1,291 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Image Upload</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Upload an Image</h1>-->
+<!--    <form action="/upload" method="POST" enctype="multipart/form-data">-->
+<!--        <label for="name">Enter your name:</label>-->
+<!--        <input type="text" id="name" name="name" required><br>-->
+<!--        <label for="image">Upload an image:</label>-->
+<!--        <input type="file" id="image" name="image" accept="image/*" ><br>-->
+<!--        <input type="submit" value="Upload">-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <center>
+    <title>AI Model Showcase</title>
+    <style>
+        /* Add a background color to the container div */
+        #container {
+            background-color: #f0f0f0; /* You can set the background color to your preference */
+            width: 640px; /* Set the container width to match 720p resolution */
+            height: 360px; /* Set the container height to match 720p resolution */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Style the video element to match the desired smaller size */
+        #modelDemo {
+            width: 640px; /* Set the desired width (half of 1280px) */
+            height: 360px; /* Set the desired height (half of 720px) */
+        }
+        #button1{
+
+            border: tomato;
+            color: rgb(0, 0, 0);
+            padding: 15px 32px;
+            text-align: center;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            margin-top: 20px;
+            margin-right: 200px;
+            cursor: pointer;
+            border-radius: 10%;
+            background-color: #97a9ec;
+        }
+        #exitButton{
+
+        border: tomato;
+        color: rgb(0, 0, 0);
+        padding: 15px 32px;
+        text-align: center;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 10%;
+        background-color: #97a9ec;
+    }
+    #requestCameraPermission{
+
+        border: tomato;
+        color: rgb(0, 0, 0);
+        padding: 15px 32px;
+        text-align: center;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 10%;
+        background-color: #97a9ec;
+    }
+    </style>
+    <style>
+         /* Style the initially hidden element */
+         #hiddenElement {
+            display: none;
+        }
+    </style>
+    </center>
+</head>
+<body>
+    <center>
+    <h1>VisionAI</h1>
+
+        <p><b>HEY, SEE ME</b></p>
+
+
+    <!-- Container div with background color -->
+    <div id="container">
+        <!-- Video element with the model output -->
+        <video id="modelDemo" autoplay playsinline></video>
+    </div>
+
+    <br>
+
+    <!-- Button to request camera permission and start the video stream -->
+    <button id="requestCameraPermission">Start Camera</button>
+
+    <br>
+
+    <br>
+    <!-- Two buttons for user interaction -->
+    <button id="button1">Upload Image</button>
+
+    <button id="exitButton">Exit</button>
+    <br>
+
+    <div id="hiddenElement">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="name">Enter your name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="image">Upload a clear, front-view image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <button id="uploadButton">Upload</button>
+            <div id="imageContainer"></div>
+        </form>
+    </div>
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            handleImageUpload();
+        });
+
+        function handleImageUpload() {
+            const nameInput = document.getElementById("name");
+            const imageInput = document.getElementById("image");
+
+            const userName = nameInput.value;
+            const formData = new FormData();
+            formData.append("name", userName);
+            formData.append("image", imageInput.files[0]);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/upload", true);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    const resultDiv = document.getElementById("uploadResult");
+                    resultDiv.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send(formData);
+            document.getElementById("uploadForm").reset();
+            setTimeout(function() {
+                hiddenElement.style.display = "none";
+            }, 2000);
+        }
+        //document.getElementById("uploadForm").reset();
+
+
+        // Function to initialize the camera stream
+        function initCamera() {
+            const videoElement = document.getElementById("modelDemo");
+
+            // Request camera access
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    videoElement.srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.error("Error accessing the camera:", error);
+                });
+        }
+
+        // Add a click event listener to the camera permission button
+        document.getElementById("requestCameraPermission").addEventListener("click", function() {
+            // Request camera permission and start the video stream when the button is clicked
+            initCamera();
+        });
+
+        // JavaScript code for button click events
+        // You can replace this with your AI model logic
+        document.getElementById("button1").addEventListener("click", function() {
+            //hiddenElement.style.display="none";
+            // Perform an action when Button 1 is clicked
+            // if (hiddenElement.style.display === "none") {
+            //     // If it's hidden, make it visible
+            //     hiddenElement.style.display = "block"; // You can use "block" or "inline" or other display values
+            // }
+            // else {
+            //     // If it's visible, hide it
+            //     hiddenElement.style.display = "none";
+            // }
+            if (hiddenElement.style.display === "none" || hiddenElement.style.display === "") {
+                // If it's hidden or not set, make it visible
+                hiddenElement.style.display = "block";
+                alert("Do you want to upload your image?")// You can use "block" or "inline" or other display values
+            } else {
+                // If it's visible, hide it
+                hiddenElement.style.display = "none";
+                alert("Have you uploaded the image?")
+            }
+
+            });
+
+         // Function to handle cleanup and exit
+         function exitProgram() {
+            // Add any cleanup actions here, such as closing connections, releasing resources, etc.
+
+            // Stop the camera stream if it's active
+            if (window.stream) {
+                window.stream.getTracks().forEach(track => {
+                    track.stop();
+                });
+            }
+
+            // Close any open connections or perform other cleanup tasks
+
+            // Exit the program
+            window.close();
+        }
+
+
+        // Function to handle the exit button click
+        // document.getElementById("exitButton").addEventListener("click", function () {
+        //     handleExit();
+        // });
+        //
+        // function handleExit() {
+        //     const xhr = new XMLHttpRequest();
+        //     xhr.open("POST", "/exit", true);
+        //
+        //     xhr.onload = function () {
+        //         if (xhr.status === 200) {
+        //             alert("The application has been closed.");
+        //         }
+        //     };
+        //
+        //     xhr.send();
+        // }
+
+
+        // let imageContainer = document.getElementById("imageContainer");
+        // // Function to handle image upload and saving
+        // function handleImageUpload() {
+        //     const nameInput = document.getElementById("nameInput");
+        //     const imageInput = document.getElementById("imageInput");
+        //
+        //     const userName = nameInput.value;
+        //     const imageFile = imageInput.files[0];
+        //
+        //     if (userName && imageFile) {
+        //         const reader = new FileReader();
+        //
+        //         reader.onload = function () {
+        //             const dataURL = reader.result;
+        //
+        //             // Save the image with a unique filename
+        //             const image = new Image();
+        //             image.src = dataURL;
+        //             image.onload = function () {
+        //                 const a = document.createElement('a');
+        //                 a.href = dataURL;
+        //                 a.download = userName + '_image.jpg';
+        //                 a.textContent = 'Download ' + userName + '\'s Image';
+        //                 imageContainer.appendChild(a);
+        //             };
+        //         };
+        //
+        //         reader.readAsDataURL(imageFile);
+        //     }
+        // }
+        //
+        // // Add a click event listener to the "Upload" button
+        // document.getElementById("uploadButton").addEventListener("click", function () {
+        //     handleImageUpload();
+        // });
+
+
+        document.getElementById("exitButton").addEventListener("click", function() {
+            // Perform an action when Button 2 is clicked
+
+
+            alert("Do you want to exit?");
+            exitProgram();
+        });
+    </script>
+</center>
+</body>
+</html>
+
