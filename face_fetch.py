@@ -23,7 +23,7 @@ def extract_face(box,frame):
 
     # Crop the face region
     #face = original_image[face_box[1]:face_box[1]+face_box[3], face_box[0]:face_box[0]+face_box[2]]
-    face = original_image[y:y+height, x:x+width]
+    face = original_image[y:y+height, x-50:x+width+50]
 
     # Create a new image with the same dimensions as the face
     #new_image = cv2.imread((face_box[2], face_box[3]), dtype=np.uint8)
@@ -56,7 +56,7 @@ def extract_face_db(box,frame):
 
     # Crop the face region
     #face = original_image[face_box[1]:face_box[1]+face_box[3], face_box[0]:face_box[0]+face_box[2]]
-    face = original_image[y:y+height, x:x+width]
+    face = original_image[y:y+height, x-50:x+width+50]
 
     # Create a new image with the same dimensions as the face
     #new_image = cv2.imread((face_box[2], face_box[3]), dtype=np.uint8)

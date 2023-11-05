@@ -13,7 +13,7 @@ ref = db.reference("/")
 #print(type(ref.get()))
 #ref.update({"hello":"world"})
 #ref.delete()
-image="test_im3.jpg"
+image="sample.jpg"
 model=YOLO("best.pt")
 results=model.predict(image,conf=0.7,iou=0.3,device=0)
 result=results[0]
