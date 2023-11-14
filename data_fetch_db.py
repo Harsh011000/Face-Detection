@@ -4,13 +4,12 @@ import numpy as np
 import torch
 
 def get_data(data):
-    cred = credentials.Certificate("credentials.json")
-    firebase_admin.initialize_app(cred,{"databaseURL":"https://visionai-4e3eb-default-rtdb.asia-southeast1.firebasedatabase.app/"})
+    cred = credentials.Certificate("credentials.json")# generate your own firebase json file
+    firebase_admin.initialize_app(cred,{"databaseURL":"link of your firebase db"})# enter your db link
     ref = db.reference("/")
     records=ref.get()
     names=list((records.keys()))
     vectors=[]
-    #print(names)
     for x in names:
         embd=db.reference("/"+x).get()
         numpy_array = np.array(embd)
