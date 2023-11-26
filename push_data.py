@@ -10,8 +10,8 @@ import string
 # embd=""
 # Nme=""
 
-cred = credentials.Certificate("credentials.json")# generate your own firebase json file
-firebase_admin.initialize_app(cred,{"databaseURL":"Enter your db link"})# enter your db link
+cred = credentials.Certificate("cred.json")# generate your own firebase json file
+firebase_admin.initialize_app(cred,{"databaseURL":"URL"})# enter your db link
 def store():
     #print(face_embeddings_test.flag)
     #global embd,Nme
