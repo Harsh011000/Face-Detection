@@ -3,6 +3,7 @@ from facenet_pytorch import InceptionResnetV1, fixed_image_standardization
 from PIL import Image
 import torch
 import data_fetch_db
+#import push_data
 
 face_emb=[]
 face_nm=[]
@@ -40,8 +41,16 @@ def match():
             global face_nm,face_emb
             face_nm=tmp[0]
             face_emb=tmp[1]
+            print(face_nm)
+            print(face_emb)
+            print(len(face_nm),len(face_emb))
             flag=1
 
+        # global face_nm, face_emb
+        # store=push_data.update_list_fix()
+        # if store!="":
+        #     face_nm.append(store[0])
+        #     face_emb.append(store[1])
         name=find_match(face_embedding_un)
         return name
 
@@ -67,3 +76,7 @@ def find_match(unknown):
     else:
         #recognized = False
         return "unknown"
+# def show_var():
+#     global face_nm,face_emb
+#     print(face_nm)
+#     print(face_emb)

@@ -2,6 +2,7 @@ from ultralytics import YOLO
 import cv2
 import face_fetch
 import face_embeddings_test
+import push_data
 
 model=YOLO("face-model.pt")
 
@@ -29,6 +30,10 @@ while cap.isOpened():
         
 
         cv2.imshow("detection",annote)
+        if cv2.waitKey(1)==32:
+            chk=push_data.store()
+            print(face_embeddings_test.flag)
+            face_embeddings_test.flag=0
         if cv2.waitKey(1)==27:
             break;
 cap.release()

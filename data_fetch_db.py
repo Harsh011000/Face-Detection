@@ -4,8 +4,9 @@ import numpy as np
 import torch
 
 def get_data(data):
-    cred = credentials.Certificate("credentials.json")# generate your own firebase json file
-    firebase_admin.initialize_app(cred,{"databaseURL":"link of your firebase db"})# enter your db link
+    if not firebase_admin._apps:
+        cred = credentials.Certificate("credentials.json")# generate your own firebase json file
+        firebase_admin.initialize_app(cred,{"databaseURL":"Enter your firebase url"})# enter your db link
     ref = db.reference("/")
     records=ref.get()
     names=list((records.keys()))
