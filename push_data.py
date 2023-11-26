@@ -3,14 +3,19 @@ from firebase_admin import db, credentials
 import face_fetch
 from ultralytics import YOLO
 import face_embeddings_test
+import random
+import string
+
+
 # embd=""
 # Nme=""
 
 cred = credentials.Certificate("credentials.json")# generate your own firebase json file
-firebase_admin.initialize_app(cred,{"databaseURL":"Enter your firebase url"})# enter your db link
+firebase_admin.initialize_app(cred,{"databaseURL":"Enter your db link"})# enter your db link
 def store():
     #print(face_embeddings_test.flag)
-    global embd,Nme
+    #global embd,Nme
+    operation=str(input("press 'p' to push / 'u' to update data"))
     name=str(input("Enter your name: "))
     ref = db.reference("/")
 
@@ -27,7 +32,12 @@ def store():
     numpy_array = data.detach().cpu().numpy()
     python_list = numpy_array.tolist()
 
-    ref.update({name: python_list})
+    if operation=="p":
+        suffix=generate_random_string(5)
+        name+=" 0"+suffix
+        ref.update({name: python_list})
+    elif operation=="u":
+        ref.update({name: python_list})
     return True
     # print(face_embeddings_test.flag)
     # face_embeddings_test.show_var()
@@ -48,3 +58,8 @@ def store():
 #     return value
 # if __name__=="__main__":
 #     store()
+
+def generate_random_string(length=5):
+    # Include all digits and symbols except "#"
+    letters = string.ascii_letters + string.digits
+    return ''.join(random.choice(letters) for _ in range(length))
