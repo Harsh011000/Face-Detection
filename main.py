@@ -7,7 +7,7 @@ import push_data
 model=YOLO("face-model.pt")
 
 cv2.setUseOptimized(True)  # Enable optimization
-zoom_scale = 1
+zoom_scale = 1.0
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1366)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
@@ -46,8 +46,8 @@ while cap.isOpened():
         for x in face_lis:
             print(x)
             cv2.putText(annote,x[0], (int(x[1][0]), int((x[1][1]-50))), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-        
 
+        cv2.putText(annote, "Zoom: "+str(zoom_scale), (5, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
         cv2.imshow("detection",annote)
         key = cv2.waitKey(1)
         if key==32: #space key
@@ -58,8 +58,8 @@ while cap.isOpened():
         elif key == 27:  # Esc key
             break
         elif key == 13:  # Enter key
-            zoom_scale = min(2.0, zoom_scale + 0.5)
+            zoom_scale = min(2.0, round(zoom_scale + 0.2,1))
         elif key == 9:  # Tab key
-            zoom_scale = max(1.0, zoom_scale - 0.5)
+            zoom_scale = max(1.0, round(zoom_scale - 0.2,1))
 cap.release()
 cv2.destroyAllWindows()

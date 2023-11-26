@@ -1,6 +1,6 @@
 import cv2
 from ultralytics import YOLO
-
+import math
 
 model = YOLO("face-model.pt")
 
@@ -42,13 +42,14 @@ while cap.isOpened():
         annote=results[0].plot()
         print(results[0].names)
 
+        cv2.putText(annote, "Zoom: " + str(zoom_scale), (5, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
         cv2.imshow("detection",annote)
         key = cv2.waitKey(1)
         if key == 27:  # Esc key
             break
         elif key == 13:  # Enter key
-            zoom_scale = min(2.0, zoom_scale + 0.5)
+            zoom_scale = min(2.0, round(zoom_scale + 0.2,1))
         elif key == 9:  # Tab key
-            zoom_scale = max(1.0, zoom_scale - 0.5)
+            zoom_scale = max(1.0, round(zoom_scale - 0.2,1))
 cap.release()
 cv2.destroyAllWindows()
