@@ -3,7 +3,6 @@ from facenet_pytorch import InceptionResnetV1, fixed_image_standardization
 from PIL import Image
 import torch
 import data_fetch_db
-#import push_data
 
 face_emb=[]
 face_nm=[]
