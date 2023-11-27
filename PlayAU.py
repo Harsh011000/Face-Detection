@@ -39,3 +39,4 @@ def stop_audio():
     global sound_playing
     pygame.mixer.music.stop()
     sound_playing = False
+#play_audio()

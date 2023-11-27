@@ -79,11 +79,12 @@ while cap.isOpened():
             if count_unknown_faces() > 4 and not pau.sound_playing:
                 current_time = pau.time.time()
                 if current_time - pau.last_audio_play_time >= 20:
+                    #print("Value :",current_time - pau.last_audio_play_time)
                     pau.play_audio_threaded()
                     pau.sound_playing = True
                     cv2.putText(annote,"Warning",(20, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
                     key = cv2.waitKey(1) & 0xFF
-                    if key == 115 or key == 83:
+                    if key == 115 or key == 83:#s key
                         pau.pygame.mixer.music.set_volume(0.0)
                 # alpha = 1  # Adjust transparency
                 # overlay = cv2.resize(warning_image, (frame.shape[1], frame.shape[0]))
