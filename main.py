@@ -48,6 +48,8 @@ while cap.isOpened():
             cv2.putText(annote,x[0], (int(x[1][0]), int((x[1][1]-50))), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
         cv2.putText(annote, "Zoom: "+str(zoom_scale), (5, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+        cv2.namedWindow("detection", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("detection", 1366, 720)
         cv2.imshow("detection",annote)
         key = cv2.waitKey(1)
         if key==32: #space key

@@ -10,7 +10,7 @@ cv2.setUseOptimized(True)  # Enable optimization
 #cv2.setNumThreads(4)       # Set the number of CPU threads
 #cv2.ocl.setUseOpenCL(True) # Enable OpenCL (GPU) support
 # Set the zoom scale (adjust as needed)
-zoom_scale = 2.0
+zoom_scale = 1.0
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1366)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
@@ -43,6 +43,8 @@ while cap.isOpened():
         print(results[0].names)
 
         cv2.putText(annote, "Zoom: " + str(zoom_scale), (5, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        cv2.namedWindow("detection", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("detection", 1366, 720)
         cv2.imshow("detection",annote)
         key = cv2.waitKey(1)
         if key == 27:  # Esc key
