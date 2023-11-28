@@ -1,0 +1,6 @@
+ultralytics
+torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+facenet-pytorch
+tensorflow
+firebase_admin
+pygame
