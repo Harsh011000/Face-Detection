@@ -17,9 +17,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 pau.sound_playing = False
 pau.last_audio_play_time = 0
 
-# # Warning symbol image path
-# warning_image_path = 'WARNING_Img.jpg'
-# warning_image = cv2.imread(warning_image_path, cv2.IMREAD_UNCHANGED)
+
 
 
 
@@ -72,10 +70,7 @@ while cap.isOpened():
 
         # Check if there are more unknown faces
         try:
-            # if name == "unknown" and len(face_lis) > 0:
-            #     pau.play_audio_threaded()
-            # elif name != "unknown" or len(face_lis) < 0:
-            #     pau.pygame.mixer.music.stop()
+
             if count_unknown_faces() > 4 and not pau.sound_playing:
                 current_time = pau.time.time()
                 if current_time - pau.last_audio_play_time >= 20:
@@ -86,9 +81,7 @@ while cap.isOpened():
                     key = cv2.waitKey(1) & 0xFF
                     if key == 115 or key == 83:#s key
                         pau.pygame.mixer.music.set_volume(0.0)
-                # alpha = 1  # Adjust transparency
-                # overlay = cv2.resize(warning_image, (frame.shape[1], frame.shape[0]))
-                # frame = cv2.addWeighted(frame, 1 - alpha, overlay, alpha, 0)
+
 
             elif count_unknown_faces() <= 4 and pau.sound_playing:
                 pau.pygame.mixer.music.stop()

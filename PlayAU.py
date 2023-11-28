@@ -11,14 +11,7 @@ pygame.mixer.music.load(audio_file)
 sound_playing = False
 last_audio_play_time=0
 def play_audio():
-    # global sound_playing
-    # sound.play()
-    # time.sleep(2)  # Adjust the delay based on your audio length
-    # pygame.mixer.music.stop()
-    # sound_playing = False
-    # pygame.mixer.music.play()
-    # pygame.time.delay(10000)  # Adjust the sleep duration based on your audio length
-    # pygame.mixer.music.stop()
+
     global sound_playing, last_audio_play_time
     sound.play()
     pygame.time.delay(2000)  # Adjust the delay based on your audio length
